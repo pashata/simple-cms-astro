@@ -1,16 +1,55 @@
 ---
+const apiUrl = import.meta.env.PUBLIC_USER_API_URL || 'https://your-laravel-api.com/api/public/user';
+const apiToken = import.meta.env.PUBLIC_API_TOKEN || 'your-public-token-here';
 
+// Fetch the user data at build time
+const res = await fetch(apiUrl, {
+    headers: {
+        Authorization: `Bearer ${apiToken}`
+    }
+});
+
+if (!res.ok) {
+    throw new Error(`Failed to fetch user data: ${res.status} ${res.statusText}`);
+}
+
+const user = await res.json();
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<head>
+    <title>User Profile</title>
+    <meta charset="UTF-8" />
+</head>
+<body>
+<h1>User Profile</h1>
+
+<div class="profile">
+    <h2>{user.first_name} {user.last_name}</h2>
+    <p>Email: {user.email}</p>
+
+    {user.avatar_url && (
+            <img src={user.avatar_url} alt="User Avatar" width="100" />
+    )}
+
+    <p><strong>Role ID:</strong> {user.role}</p>
+    <p><strong>User ID:</strong> {user.id}</p>
+    <p><strong>Disabled:</strong> {user.is_disabled ? 'Yes' : 'No'}</p>
+</div>
+
+<style>
+    body { font-family: sans-serif; }
+    h1 {
+        text-align: center;
+    }
+    .profile {
+        max-width: 500px;
+        margin: 0 auto;
+        border: 1px solid #ccc;
+        padding: 1rem;
+        border-radius: 0.5rem;
+    }
+    img { border-radius: 50%; }
+</style>
+</body>
 </html>
