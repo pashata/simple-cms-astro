@@ -1,4 +1,8 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import ArticleList from '../components/ArticleList.astro';
+import { Image } from 'astro:assets';
+
 const apiUrl = import.meta.env.PUBLIC_USER_API_URL || 'https://your-laravel-api.com/api/public/user';
 const apiToken = import.meta.env.PUBLIC_API_TOKEN || 'your-public-token-here';
 
@@ -13,43 +17,44 @@ if (!res.ok) {
     throw new Error(`Failed to fetch user data: ${res.status} ${res.statusText}`);
 }
 
-const user = await res.json();
+const page = await res.json();
 ---
 
-<html lang="en">
-<head>
-    <title>User Profile</title>
-    <meta charset="UTF-8" />
-</head>
-<body>
-<h1>User Profile</h1>
+<Layout>
+	<!-- Banner -->
+	<section id="banner" class="major">
+		<div class="inner">
+			<header class="major">
+				<h1>{page.sections.hero.blocks.description.data.content}</h1>
+			</header>
+			<div class="content">
+				<p set:html={page.sections.hero.blocks.description.data.content} />
+				<!-- {user.avatar_url && (
+					<img src={user.avatar_url} alt="User Avatar" width="100" />
+				)} -->
+				<ul class="actions">
+					<li><a href="#one" class="button next scrolly">Some button</a></li>
+				</ul>
+			</div>
+		</div>
+	</section>
 
-<div class="profile">
-    <h2>{user.first_name} {user.last_name}</h2>
-    <p>Email: {user.email}</p>
+	<!-- Main -->
+	<div id="main">
+		<ArticleList items={page.sections.hero.block_groups.masonary} />
 
-    {user.avatar_url && (
-            <img src={user.avatar_url} alt="User Avatar" width="100" />
-    )}
+		<!-- Two -->
+		<section id="two">
+			<div class="inner">
+				<header class="major">
+					<h2>{page.sections['about-us'].blocks.title.data.content}</h2>
+				</header>
+				<p>{page.sections['about-us'].blocks.description.data.content}</p>
+				<ul class="actions">
+					<li><a href="landing.html" class="button next">{page.sections['about-us'].blocks.button.data.content}</a></li>
+				</ul>
+			</div>
+		</section>
 
-    <p><strong>Role ID:</strong> {user.role}</p>
-    <p><strong>User ID:</strong> {user.id}</p>
-    <p><strong>Disabled:</strong> {user.is_disabled ? 'Yes' : 'No'}</p>
-</div>
-
-<style>
-    body { font-family: sans-serif; }
-    h1 {
-        text-align: center;
-    }
-    .profile {
-        max-width: 500px;
-        margin: 0 auto;
-        border: 1px solid #ccc;
-        padding: 1rem;
-        border-radius: 0.5rem;
-    }
-    img { border-radius: 50%; }
-</style>
-</body>
-</html>
+	</div>
+</Layout>
