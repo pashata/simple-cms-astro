@@ -1,7 +1,8 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import ArticleList from '../components/ArticleList.astro';
-import { Image } from 'astro:assets';
+import { getContent } from '../utils';
 
 const apiUrl = import.meta.env.PUBLIC_USER_API_URL;
 const apiToken = import.meta.env.PUBLIC_API_TOKEN;
@@ -18,7 +19,7 @@ const res = await fetch(apiUrl, {
 });
 
 if (!res.ok) {
-    throw new Error(`Failed to fetch user data: ${res.status} ${res.statusText}`);
+    throw new Error(`Failed to fetch page data: ${res.status} ${res.statusText}`);
 }
 
 const page = await res.json();
@@ -29,10 +30,10 @@ const page = await res.json();
 	<section id="banner" class="major">
 		<div class="inner">
 			<header class="major">
-				<h1>{page.sections.hero.blocks.description.data.content}</h1>
+				<h1>{getContent(page, 'hero', 'description')}</h1>
 			</header>
 			<div class="content">
-				<p set:html={page.sections.hero.blocks.description.data.content} />
+				<p set:html={getContent(page, 'hero', 'description')} />
 				<!-- {user.avatar_url && (
 					<img src={user.avatar_url} alt="User Avatar" width="100" />
 				)} -->
@@ -51,11 +52,15 @@ const page = await res.json();
 		<section id="two">
 			<div class="inner">
 				<header class="major">
-					<h2>{page.sections['about-us'].blocks.title.data.content}</h2>
+					<h2>{getContent(page, 'about-us', 'title')}</h2>
 				</header>
-				<p>{page.sections['about-us'].blocks.description.data.content}</p>
+				<p>{getContent(page, 'about-us', 'description')}</p>
 				<ul class="actions">
-					<li><a href="landing.html" class="button next">{page.sections['about-us'].blocks.button.data.content}</a></li>
+					<li>
+						<a href="landing.html" class="button next">
+							{getContent(page, 'about-us', 'button')}
+						</a>
+					</li>
 				</ul>
 			</div>
 		</section>
