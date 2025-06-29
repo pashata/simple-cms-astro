@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Install, build, and upload your site
         env:
-            PUBLIC_API_URL: ${{ secrets.PUBLIC_API_URL }}
+            PUBLIC_USER_API_URL: ${{ secrets.PUBLIC_USER_API_URL }}
             PUBLIC_API_TOKEN: ${{ secrets.PUBLIC_API_TOKEN }}
         uses: withastro/action@v3
         # with:

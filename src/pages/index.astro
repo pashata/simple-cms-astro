@@ -3,8 +3,12 @@ import Layout from '../layouts/Layout.astro';
 import ArticleList from '../components/ArticleList.astro';
 import { Image } from 'astro:assets';
 
-const apiUrl = import.meta.env.PUBLIC_USER_API_URL || 'https://your-laravel-api.com/api/public/user';
-const apiToken = import.meta.env.PUBLIC_API_TOKEN || 'your-public-token-here';
+const apiUrl = import.meta.env.PUBLIC_USER_API_URL;
+const apiToken = import.meta.env.PUBLIC_API_TOKEN;
+
+if (!apiUrl || !apiToken) {
+	throw new Error('Missing PUBLIC_USER_API_URL or PUBLIC_API_TOKEN env variables!');
+}
 
 // Fetch the user data at build time
 const res = await fetch(apiUrl, {
