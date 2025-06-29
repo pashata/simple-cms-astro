@@ -3160,7 +3160,7 @@ input, select, textarea {
 				background-color: #53e3fb;
 			}
 
-		#header nav {
+		#header .header-nav {
 			display: -moz-flex;
 			display: -webkit-flex;
 			display: -ms-flex;

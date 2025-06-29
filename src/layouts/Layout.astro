@@ -2,6 +2,7 @@
 // Astro will bundle and optimize this CSS for you automatically
 // This also works for preprocessor files like .scss, .styl, etc.
 import '../assets/css/main.css';
+import NavMenu from '../components/NavMenu.astro';
     // import '../assets/js/main.js';
 ---
 <!doctype html>
@@ -18,27 +19,11 @@ import '../assets/css/main.css';
             <!-- Header -->
             <header id="header" class="alt">
                 <a href="index.html" class="logo"><strong>Forty</strong> <span>by HTML5 UP</span></a>
-                <nav>
-                    <a href="#menu">Menu</a>
-                </nav>
+                <NavMenu />
             </header>
-
-            <!-- Menu -->
-            <nav id="menu">
-                <ul class="links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="landing.html">Landing</a></li>
-                    <li><a href="generic.html">Generic</a></li>
-                    <li><a href="elements.html">Elements</a></li>
-                </ul>
-                <ul class="actions stacked">
-                    <li><a href="#" class="button primary fit">Get Started</a></li>
-                    <li><a href="#" class="button fit">Log In</a></li>
-                </ul>
-            </nav>
 
             <slot />
         </div>
-        <script type="module" src="../assets/js/main.js"></script>
-	</body>
+        <script type="module" src={`${import.meta.env.BASE_URL}/assets/js/main.js`}></script>
+    </body>
 </html>

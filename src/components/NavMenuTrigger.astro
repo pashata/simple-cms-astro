@@ -1,0 +1,64 @@
+---
+/* NavMenuTrigger.astro */
+---
+
+<!-- Trigger (can be placed elsewhere if you prefer) -->
+<nav class="header-nav">
+    <a href="#menu" id="menu-trigger">Menu</a>
+</nav>
+
+<!-- ========== behaviour ========== -->
+<script is:inline>
+    (() => {
+        const body   = document.body;
+        const menu   = document.getElementById('menu');
+        const inner  = menu.querySelector('.inner');
+        const trigger = document.getElementById('menu-trigger');
+        let locked   = false;
+
+        /* ------- helpers ---------------------------------------------- */
+        function lock() {
+            if (locked) return false;
+            locked = true;
+            setTimeout(() => (locked = false), 350); // match old timing
+            return true;
+        }
+
+        const show   = () => lock() && body.classList.add('is-menu-visible');
+        const hide   = () => lock() && body.classList.remove('is-menu-visible');
+        const toggle = () => lock() && body.classList.toggle('is-menu-visible');
+
+        /* ------- open/close triggers ---------------------------------- */
+        trigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggle();
+        });
+
+        menu.addEventListener('click', (e) => {
+            // click on backdrop or the “Close” link
+            if (e.target === menu || e.target.classList.contains('close')) {
+                e.preventDefault();
+                hide();
+            }
+        });
+
+        // keep clicks inside .inner from bubbling to the backdrop
+        inner.addEventListener('click', (e) => e.stopPropagation());
+
+        // link clicks inside menu: close, then navigate after 250 ms
+        inner.addEventListener('click', (e) => {
+            const a = e.target.closest('a');
+            if (!a) return;
+            const href = a.getAttribute('href');
+            if (!href || href.startsWith('#')) return; // hash links handled elsewhere
+            e.preventDefault();
+            hide();
+            setTimeout(() => (window.location.href = href), 250);
+        });
+
+        /* ------- global events ---------------------------------------- */
+        document.addEventListener('click', hide);
+        document.addEventListener('keydown', (e) => e.key === 'Escape' && hide());
+    })();
+</script>

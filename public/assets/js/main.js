@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	const $header = document.getElementById('header');
 	const $banner = document.getElementById('banner');
 	const $tiles = document.querySelectorAll('.tiles > article');
-	const $menu = document.getElementById('menu');
  
 	// Remove preload class after load
 	window.addEventListener('load', () => {
@@ -112,72 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		setTimeout(onScroll, 100);
 	  });
 	  window.addEventListener('scroll', onScroll);
-	}
-  
-	// Menu logic
-	if ($menu) {
-	  const $menuInner = document.createElement('div');
-	  $menuInner.classList.add('inner');
-	  while ($menu.firstChild) {
-		$menuInner.appendChild($menu.firstChild);
-	  }
-	  $menu.appendChild($menuInner);
-  
-	  let menuLocked = false;
-  
-	  const lockMenu = () => {
-		if (menuLocked) return false;
-		menuLocked = true;
-		setTimeout(() => { menuLocked = false; }, 350);
-		return true;
-	  };
-  
-	  const showMenu = () => {
-		if (lockMenu()) $body.classList.add('is-menu-visible');
-	  };
-  
-	  const hideMenu = () => {
-		if (lockMenu()) $body.classList.remove('is-menu-visible');
-	  };
-  
-	  const toggleMenu = () => {
-		if (lockMenu()) $body.classList.toggle('is-menu-visible');
-	  };
-  
-	  $menuInner.addEventListener('click', e => e.stopPropagation());
-	  $menuInner.querySelectorAll('a').forEach(a => {
-		a.addEventListener('click', e => {
-		  e.preventDefault();
-		  e.stopPropagation();
-		  hideMenu();
-		  setTimeout(() => { window.location.href = a.getAttribute('href'); }, 250);
-		});
-	  });
-  
-	  $menu.addEventListener('click', e => {
-		e.preventDefault();
-		e.stopPropagation();
-		hideMenu();
-	  });
-  
-	  const closeBtn = document.createElement('a');
-	  closeBtn.className = 'close';
-	  closeBtn.href = '#menu';
-	  closeBtn.textContent = 'Close';
-	  $menu.appendChild(closeBtn);
-  
-	  document.querySelectorAll('a[href="#menu"]').forEach(a => {
-		a.addEventListener('click', e => {
-		  e.preventDefault();
-		  e.stopPropagation();
-		  toggleMenu();
-		});
-	  });
-  
-	  document.addEventListener('click', hideMenu);
-	  document.addEventListener('keydown', e => {
-		if (e.key === 'Escape') hideMenu();
-	  });
 	}
   });
   
