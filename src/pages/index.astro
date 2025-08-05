@@ -11,18 +11,22 @@ if (!apiUrl || !apiToken) {
 	throw new Error('Missing PUBLIC_USER_API_URL or PUBLIC_API_TOKEN env variables!');
 }
 
-// Fetch the user data at build time
-const res = await fetch(apiUrl, {
+const res = await fetch(`${apiUrl}/navigation/about-us`, {
+    method: 'GET',
     headers: {
-        Authorization: `Bearer ${apiToken}`
-    }
+        'Authorization': `Bearer ${apiToken}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    },
+    // credentials: 'include', // optional: if using cookies/session
+    // mode: 'cors', // optional: if hitting cross-origin APIs
 });
 
 if (!res.ok) {
     throw new Error(`Failed to fetch page data: ${res.status} ${res.statusText}`);
 }
 
-const page = await res.json();
+const { data: page } = await res.json();
 ---
 
 <Layout>
@@ -33,7 +37,7 @@ const page = await res.json();
 				<h1>{getContent(page, 'hero', 'description')}</h1>
 			</header>
 			<div class="content">
-				<p set:html={getContent(page, 'hero', 'description')} />
+				<p set:html={getContent(page, 'hero', 'subtitle')} />
 				<!-- {user.avatar_url && (
 					<img src={user.avatar_url} alt="User Avatar" width="100" />
 				)} -->
@@ -46,7 +50,7 @@ const page = await res.json();
 
 	<!-- Main -->
 	<div id="main">
-		<ArticleList items={page.sections.hero.block_groups.masonary} />
+		<!-- <ArticleList items={page.sections.hero.block_groups.masonary} /> -->
 
 		<!-- Two -->
 		<section id="two">
