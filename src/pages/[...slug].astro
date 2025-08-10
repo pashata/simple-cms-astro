@@ -1,5 +1,5 @@
 ---
-import MainLayout from "../layouts/MainLayout.astro";
+import Layout from "../layouts/Layout.astro";
 import DefaultTemplate from "../templates/Default.astro";
 import Landing from "../templates/Landing.astro";
 import BlogPost from "../templates/BlogPost.astro";
@@ -26,6 +26,6 @@ export function getStaticPaths() {
 const { template } = Astro.props;
 const Template = templateMap[template] ?? DefaultTemplate;
 ---
-<MainLayout>
+<Layout>
   <Template />
-</MainLayout>
+</Layout>
