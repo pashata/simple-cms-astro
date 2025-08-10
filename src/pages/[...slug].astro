@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import DefaultTemplate from "../templates/Default.astro";
 import Landing from "../templates/Landing.astro";
 import BlogPost from "../templates/BlogPost.astro";
+import { safeFetchRoutes } from "../utils/api/fetchRoutes";
 
 const templateMap = {
   Landing,
@@ -10,17 +11,12 @@ const templateMap = {
   Default: DefaultTemplate,
 } as const;
 
-export function getStaticPaths() {
-  const ROUTES = [
-    { slug: "blog", template: "Default" },
-    { slug: "blog/hello-world", template: "BlogPost" },
-    { slug: "about", template: "Default" },
-  ] as const;
+export async function getStaticPaths() {
+  const routes = await safeFetchRoutes();
 
-  return ROUTES.map(({ slug, template }) => ({
-    params: { slug }, // string like "blog/hello-world"
-    props: { template },
-  }));
+  return routes
+    .filter(r => r.slug) // skip root
+    .map(r => ({ params: { slug: r.slug }, props: { template: "Default" } }));
 }
 
 const { template } = Astro.props;

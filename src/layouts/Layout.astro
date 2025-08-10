@@ -1,14 +1,10 @@
 ---
+import { safeFetchRoutes } from "../utils/api/fetchRoutes";
 import '../assets/css/main.css';
-const path = (Astro.url.pathname.replace(/\/+$/, "") || "/");
 
-// keep it simple; mirror your SSG routes
-const links = [
-  { href: "/", label: "Home" },
-  { href: "/blog", label: "Blog" },
-  { href: "/blog/hello-world", label: "Hello World" },
-  { href: "/about", label: "About" },
-];
+const currentPath = (Astro.url.pathname.replace(/\/+$/, "") || "/");
+
+const routes = await safeFetchRoutes();
 ---
 <html lang="en">
   <head>
@@ -19,9 +15,9 @@ const links = [
   <body>
     <header>
       <nav>
-        {links.map(({ href, label }) => (
-          <span class={path === href ? "active" : ""}>
-            <a href={href}>{label}</a>
+        {routes.map(({ title, path }) => (
+          <span class={currentPath === path ? "active" : ""}>
+            <a href={path}>{title}</a>
           </span>
         ))}
       </nav>
