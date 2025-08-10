@@ -1,0 +1,31 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import DefaultTemplate from "../templates/Default.astro";
+import Landing from "../templates/Landing.astro";
+import BlogPost from "../templates/BlogPost.astro";
+
+const templateMap = {
+  Landing,
+  BlogPost,
+  Default: DefaultTemplate,
+} as const;
+
+export function getStaticPaths() {
+  const ROUTES = [
+    { slug: "blog", template: "Default" },
+    { slug: "blog/hello-world", template: "BlogPost" },
+    { slug: "about", template: "Default" },
+  ] as const;
+
+  return ROUTES.map(({ slug, template }) => ({
+    params: { slug }, // string like "blog/hello-world"
+    props: { template },
+  }));
+}
+
+const { template } = Astro.props;
+const Template = templateMap[template] ?? DefaultTemplate;
+---
+<MainLayout>
+  <Template />
+</MainLayout>

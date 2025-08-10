@@ -1,0 +1,55 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import ArticleList from '../components/ArticleList.astro';
+import { getContent, safeFetchPageData } from '../utils';
+
+const page = await safeFetchPageData('/navigation/about-us');
+---
+
+<Layout>
+	<!-- Banner -->
+	<section id="banner" class="major">
+		<div class="inner">
+			<header class="major">
+				<h1>{getContent(page, 'hero', 'description', 'This is a title')}</h1>
+			</header>
+			<div class="content">
+				<p set:html={getContent(page, 'hero', 'subtitle', 'This is a subtitle')} />
+				<!-- {user.avatar_url && (
+					<img src={user.avatar_url} alt="User Avatar" width="100" />
+				)} -->
+				<ul class="actions">
+					<li>
+						<a href="#one" class="button next scrolly">
+							{getContent(page, 'hero', 'description', 'Some button')}
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</section>
+
+	<!-- Main -->
+	<div id="main">
+		<!-- <ArticleList items={page.sections.hero.block_groups.masonary} /> -->
+
+		<!-- Two -->
+		<section id="two">
+			<div class="inner">
+				<header class="major">
+					<h2>{getContent(page, 'about-us', 'title', 'This is a title')}</h2>
+				</header>
+				<p>{getContent(page, 'about-us', 'description', 'This is a description')}</p>
+				<ul class="actions">
+					<li>
+						<a href="landing.html" class="button next">
+							{getContent(page, 'about-us', 'button', 'Some buttone')}
+						</a>
+					</li>
+				</ul>
+			</div>
+		</section>
+
+	</div>
+</Layout>
