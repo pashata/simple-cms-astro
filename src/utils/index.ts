@@ -1,2 +1,2 @@
-export * from './data.ts';
+export * from './content';
 export * from './api';

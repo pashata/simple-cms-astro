@@ -1,0 +1,35 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Default, Landing, AboutUs } from "../templates";
+import { safeFetchRoutes } from "../utils/api/fetchRoutes";
+import { fetchPageData } from "../utils/api/fetchPageData"; // <-- new
+
+const templateMap = {
+  landing: Landing,
+  default: Default,
+  about: AboutUs
+} as const;
+
+export async function getStaticPaths() {
+  const routes = await safeFetchRoutes();
+
+  return routes
+    .filter(r => r.slug)
+    .map(r => ({
+      params: { slug: r.slug }, // keep only slug
+    }));
+}
+
+// Slug for this page (string, e.g. "about-us" or "blog/hello-world")
+const { slug } = Astro.params;
+
+// Fetch full page data using the slug
+const page = await fetchPageData(`/navigation/${slug}`);
+
+// Get template from the page data, fallback to Default
+const template = page?.template_page_slug ?? "default";
+const Template = templateMap[template] ?? Default;
+---
+<Layout title={page.title} description={page.description}>
+  <Template data={page} />
+</Layout>
