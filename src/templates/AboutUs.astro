@@ -1,10 +1,9 @@
 ---
 // templates/Landing.astro
 import { getSection } from "../utils/content";
-import { Hero, Employees } from "../sections";
+import { AboutIntro } from "../sections";
 import type { CmsPage } from "../types";
 
 const { data: page } = Astro.props as { data: CmsPage };
 ---
-<Hero section={getSection(page, 'hero')} />
-<Employees section={getSection(page, 'employees')} />
+<AboutIntro section={getSection(page, 'about-intro')} />

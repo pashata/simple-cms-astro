@@ -1,0 +1,17 @@
+---
+// sections/Employees.astro
+import { getBlockData } from "../utils/content";
+import type { CmsSection, BlockText } from "../types";
+
+const { section } = Astro.props as { section: CmsSection };
+
+const title = getBlockData<BlockText>(section, "title", { content: "About us", tag: "h2" });
+const description = getBlockData<BlockText>(section, "description", { content: "This is a description", tag: "p" });
+
+const TitleTag = title.tag;
+const DescTag = description.tag;
+---
+<section style="padding: 2rem; background-color: #e0f7fa; text-align: center; margin-bottom: 1rem;">
+  <TitleTag>{title.content}</TitleTag>
+  <DescTag>{description.content}</DescTag>
+</section>

@@ -1,12 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { Default, Landing } from "../templates";
+import { Default, Landing, AboutUs } from "../templates";
 import { safeFetchRoutes } from "../utils/api/fetchRoutes";
 import { fetchPageData } from "../utils/api/fetchPageData"; // <-- new
 
 const templateMap = {
-  'landing': Landing,
-  'default': Default,
+  landing: Landing,
+  default: Default,
+  about: AboutUs
 } as const;
 
 export async function getStaticPaths() {
