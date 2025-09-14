@@ -1,7 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Landing from "../templates/Landing.astro";
+import { fetchPageData } from "../utils/api/fetchPageData";
+
+const page = await fetchPageData('/navigation');
 ---
-<Layout>
-  <Landing />
+<Layout title={page.title} description={page.description}>
+  <Landing data={page} />
 </Layout>

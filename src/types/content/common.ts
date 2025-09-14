@@ -1,16 +1,17 @@
-interface CmsBlock {
-    "id": number;
-    "section_id": number;
-    "type": string;
-    "slug": string;
-    "data": unknown;
+export interface CmsBlock<TData = unknown> {
+  id: number;
+  section_id: number;
+  type: string;
+  slug: string;
+  data: TData;
 }
+
 
 type CmsBlocks<T = string> = Record<T, CmsBlock>;
 
 type CmsBlockGroups<T = string, B = string> = Record<T, CmsBlocks<B>>;
 
-interface CmsSection {
+export interface CmsSection {
     "id": number;
     "page_id": number;
     "title": string;

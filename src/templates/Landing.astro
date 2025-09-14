@@ -1,2 +1,18 @@
-<h1>🏠 Landing Page</h1>
-<p>This is the landing page template.</p>
+---
+// templates/Landing.astro
+import { getSection } from "../utils/content";
+import { Hero, Employees } from "../sections";
+import type { CmsPage } from "../types";
+
+const { data: page } = Astro.props as { data: CmsPage };
+---
+<head>
+  <title>{page.title}</title>
+  <meta name="description" content={page.description} />
+</head>
+
+<h1>{page.title}</h1>
+<p>{page.description}</p>
+
+<Hero section={getSection(page, 'hero')} />
+<Employees section={getSection(page, 'employees')} />

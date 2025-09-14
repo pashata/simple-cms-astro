@@ -1,2 +1,6 @@
+---
+const { data } = Astro.props;
+---
 <h1>📄 Default Template</h1>
 <p>This is the default template.</p>
+<pre>{JSON.stringify(data, null, 2)}</pre>

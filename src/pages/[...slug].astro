@@ -1,27 +1,34 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import DefaultTemplate from "../templates/Default.astro";
-import Landing from "../templates/Landing.astro";
-import BlogPost from "../templates/BlogPost.astro";
+import { Default, Landing } from "../templates";
 import { safeFetchRoutes } from "../utils/api/fetchRoutes";
+import { fetchPageData } from "../utils/api/fetchPageData"; // <-- new
 
 const templateMap = {
-  Landing,
-  BlogPost,
-  Default: DefaultTemplate,
+  'landing': Landing,
+  'default': Default,
 } as const;
 
 export async function getStaticPaths() {
   const routes = await safeFetchRoutes();
 
   return routes
-    .filter(r => r.slug) // skip root
-    .map(r => ({ params: { slug: r.slug }, props: { template: "Default" } }));
+    .filter(r => r.slug)
+    .map(r => ({
+      params: { slug: r.slug }, // keep only slug
+    }));
 }
 
-const { template } = Astro.props;
-const Template = templateMap[template] ?? DefaultTemplate;
+// Slug for this page (string, e.g. "about-us" or "blog/hello-world")
+const { slug } = Astro.params;
+
+// Fetch full page data using the slug
+const page = await fetchPageData(`/navigation/${slug}`);
+
+// Get template from the page data, fallback to Default
+const template = page?.template_page_slug ?? "default";
+const Template = templateMap[template] ?? Default;
 ---
-<Layout>
-  <Template />
+<Layout title={page.title} description={page.description}>
+  <Template data={page} />
 </Layout>
